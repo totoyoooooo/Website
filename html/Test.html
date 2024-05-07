@@ -1,0 +1,443 @@
+<!DOCTYPE html> 
+
+<!-- 
+<link href="https://blog-static.cnblogs.com/files/miluluyo/tippy.min.css" rel="stylesheet">
+<script src="https://blog-static.cnblogs.com/files/miluluyo/jquery2.min.js"></script>
+<script src="https://blog-static.cnblogs.com/files/miluluyo/tippy.js"></script>
+<script src="https://blog-static.cnblogs.com/files/miluluyo/milusidebar.js"></script>
+
+<div id ="clock">
+    <canvas id="canvas" ></canvas>
+</div>
+<style type="text/css">
+/*clock样式*/
+#canvas {
+    display: block;
+    margin: 10px 0 -30px 0;
+    height:100%;
+    width: 100%;
+}
+</style>
+<script>
+     digit =
+       [
+            [
+                [0,0,1,1,1,0,0],
+                [0,1,1,0,1,1,0],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,0,1,1,0],
+                [0,0,1,1,1,0,0]
+            ],//0
+            [
+                [0,0,0,1,1,0,0],
+                [0,1,1,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [1,1,1,1,1,1,1]
+            ],//1
+            [
+                [0,1,1,1,1,1,0],
+                [1,1,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,0,0],
+                [0,0,1,1,0,0,0],
+                [0,1,1,0,0,0,0],
+                [1,1,0,0,0,0,0],
+                [1,1,0,0,0,1,1],
+                [1,1,1,1,1,1,1]
+            ],//2
+            [
+                [1,1,1,1,1,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,0,0],
+                [0,0,1,1,1,0,0],
+                [0,0,0,0,1,1,0],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,1,1,0]
+            ],//3
+            [
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,1,0],
+                [0,0,1,1,1,1,0],
+                [0,1,1,0,1,1,0],
+                [1,1,0,0,1,1,0],
+                [1,1,1,1,1,1,1],
+                [0,0,0,0,1,1,0],
+                [0,0,0,0,1,1,0],
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,1,1]
+            ],//4
+            [
+                [1,1,1,1,1,1,1],
+                [1,1,0,0,0,0,0],
+                [1,1,0,0,0,0,0],
+                [1,1,1,1,1,1,0],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,1,1,0]
+            ],//5
+            [
+                [0,0,0,0,1,1,0],
+                [0,0,1,1,0,0,0],
+                [0,1,1,0,0,0,0],
+                [1,1,0,0,0,0,0],
+                [1,1,0,1,1,1,0],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,1,1,0]
+            ],//6
+            [
+                [1,1,1,1,1,1,1],
+                [1,1,0,0,0,1,1],
+                [0,0,0,0,1,1,0],
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,1,1,0,0,0],
+                [0,0,1,1,0,0,0],
+                [0,0,1,1,0,0,0],
+                [0,0,1,1,0,0,0]
+            ],//7
+            [
+                [0,1,1,1,1,1,0],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,1,1,0],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,1,1,0]
+            ],//8
+            [
+                [0,1,1,1,1,1,0],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,0,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,0,0],
+                [0,1,1,0,0,0,0]
+            ],//9
+            [
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,1,1,0],
+                [0,1,1,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,1,1,0],
+                [0,1,1,0],
+                [0,0,0,0],
+                [0,0,0,0]
+            ]//:
+        ];
+
+    var WINDOW_WIDTH = 1024; // 1024
+    var WINDOW_HEIGHT = 768; // 768
+    var RADIUS = 8;
+    var MARGIN_TOP = 60;
+    var MARGIN_LEFT = 30;
+    const endTime = new Date(2016, 8, 13, 18, 47, 52);
+    var curShowTimeSeconds = 0;
+    var balls = [];
+    const colors = ["#33B5E5","#0099CC","#AA66CC","#9933CC","#99CC00","#669900","#FFBB33","#FF8800","#FF4444","#CC0000"]
+    window.onload = function() {
+        var canvas = document.getElementById('canvas');
+        var cxt = canvas.getContext('2d');
+    
+        canvas.width = WINDOW_WIDTH;
+        canvas.height = WINDOW_WIDTH;
+
+        curShowTimeSeconds = getCurrentShowTimeSeconds();
+        setInterval(
+            function(){
+                render(cxt);
+                update();
+            }
+            ,
+            50
+        );
+    };
+    function getCurrentShowTimeSeconds() {
+        var curTime = new Date();
+        var ret = curTime.getHours() * 3600 + curTime.getMinutes() * 60 + curTime.getSeconds();
+        return ret;
+    }
+    function update() {
+        var nextShowTimeSeconds = getCurrentShowTimeSeconds();
+        var nextHours = parseInt(nextShowTimeSeconds / 3600);
+        var nextMinutes = parseInt((nextShowTimeSeconds - nextHours * 3600) / 60);
+        var nextSeconds = nextShowTimeSeconds % 60;
+        var curHours = parseInt(curShowTimeSeconds / 3600);
+        var curMinutes = parseInt((curShowTimeSeconds - curHours * 3600) / 60);
+        var curSeconds = curShowTimeSeconds % 60;
+    
+        if (nextSeconds !== curSeconds) {
+            // 检测变化生成新小球
+            if (parseInt(curHours/10) != parseInt(nextHours/10) )
+                addBalls( MARGIN_LEFT + 0 , MARGIN_TOP , parseInt(curHours/10) );
+            
+            if (parseInt(curHours%10) != parseInt(nextHours%10) )
+                addBalls( MARGIN_LEFT + 15*(RADIUS+1) , MARGIN_TOP , parseInt(curHours/10) );
+            
+            if (parseInt(curMinutes/10) != parseInt(nextMinutes/10) )
+                addBalls( MARGIN_LEFT + 39*(RADIUS+1) , MARGIN_TOP , parseInt(curMinutes/10) );
+            
+            if (parseInt(curMinutes%10) != parseInt(nextMinutes%10) )
+                addBalls( MARGIN_LEFT + 54*(RADIUS+1) , MARGIN_TOP , parseInt(curMinutes%10) );
+            
+            if (parseInt(curSeconds/10) != parseInt(nextSeconds/10) )
+                addBalls( MARGIN_LEFT + 78*(RADIUS+1) , MARGIN_TOP , parseInt(curSeconds/10) );
+            
+            if (parseInt(curSeconds%10) != parseInt(nextSeconds%10) )
+                addBalls( MARGIN_LEFT + 93*(RADIUS+1) , MARGIN_TOP , parseInt(nextSeconds%10) );
+            
+            curShowTimeSeconds = nextShowTimeSeconds;
+        }
+        updateBalls();
+    }
+
+    function updateBalls(){
+        for( var i = 0 ; i < balls.length ; i ++ ){
+        balls[i].x += balls[i].vx;
+            balls[i].y += balls[i].vy;
+            balls[i].vy += balls[i].g;
+            if( balls[i].y >= WINDOW_HEIGHT - RADIUS ){
+                balls[i].y = WINDOW_HEIGHT - RADIUS;
+            balls[i].vy = - balls[i].vy*0.75;
+            }
+        }
+        var cnt = 0;
+        // 清除不在画面的小球
+        for (var i = 0; i < balls.length; i++) {
+            if (balls[i].x + RADIUS > 0 && balls[i].x - RADIUS < WINDOW_WIDTH) { 
+                balls[cnt++] = balls[i];
+            }
+        }
+        while (balls.length > cnt)  balls.pop();
+        
+    }
+    function addBalls( x , y , num ){
+        for (var i = 0; i < digit[num].length; i ++)
+            for (var j = 0; j < digit[num][i].length; j ++)
+                if (digit[num][i][j] == 1 ){
+                    var aBall = {
+                        x:x+j*2*(RADIUS+1)+(RADIUS+1),
+                        y:y+i*2*(RADIUS+1)+(RADIUS+1),
+                        g:1.5+Math.random(),
+                        vx:Math.pow( -1 , Math.ceil( Math.random()*1000 ) ) * 4,
+                        vy:-5,
+                        color: colors[ Math.floor( Math.random()*colors.length ) ]
+                    }
+                    balls.push( aBall )
+                }
+    }
+    function render(cxt) {
+        cxt. clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        var hours = parseInt(curShowTimeSeconds / 3600);
+        var minutes = parseInt((curShowTimeSeconds - hours * 3600) / 60);
+        var seconds = curShowTimeSeconds % 60;
+        // 数组为7*14的矩阵
+        renderDigit(MARGIN_LEFT, MARGIN_TOP, parseInt(hours/10), cxt);
+        renderDigit(MARGIN_LEFT + 15*(RADIUS+1), MARGIN_TOP, parseInt(hours%10), cxt);
+        renderDigit(MARGIN_LEFT + 30*(RADIUS+1), MARGIN_TOP, 10, cxt); // 冒号：宽度9
+        renderDigit(MARGIN_LEFT + 39*(RADIUS+1), MARGIN_TOP, parseInt(minutes/10), cxt);
+        renderDigit(MARGIN_LEFT + 54*(RADIUS+1), MARGIN_TOP, parseInt(minutes%10), cxt);
+        renderDigit(MARGIN_LEFT + 69*(RADIUS+1), MARGIN_TOP, 10, cxt); // 冒号：
+        renderDigit(MARGIN_LEFT + 78*(RADIUS+1), MARGIN_TOP, parseInt(seconds/10), cxt);
+        renderDigit(MARGIN_LEFT + 93*(RADIUS+1), MARGIN_TOP, parseInt(seconds%10), cxt);
+        for( var i = 0 ; i < balls.length ; i ++ ){
+            cxt.fillStyle=balls[i].color;
+            cxt.beginPath();
+            cxt.arc( balls[i].x , balls[i].y , RADIUS , 0 , 2*Math.PI , true );
+        cxt.closePath();
+            cxt.fill();
+        }
+    }
+    function renderDigit(x, y, num, cxt) {
+        cxt.fillStyle = "rgb(0, 102, 153)";
+        for (var i = 0; i < digit[num].length; i++) {
+            for (var j = 0; j < digit[num][i].length; j++) {
+                if (digit[num][i][j] == 1) {
+                    cxt.beginPath();
+                    cxt.arc(x+j*2*(RADIUS+1)+(RADIUS+1), y+i*2*(RADIUS+1)+(RADIUS+1), RADIUS, 0, 2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+}
+</script> -->
+
+
+<html>
+    <head>
+        <meta charset = "utf-8">
+        <title> 网页名 </title>
+        <style>
+            body {  background-color:aliceblue; }
+            h1 { 
+                color:rgb(35, 150, 250); 
+                text-align: center;
+            }
+            h2 { 
+                color:rgba(0, 132, 255, 0.358);
+                text-align: end;
+            }
+            p { 
+                margin-left: 50px; 
+                font-size: large;
+                text-indent: 50px;
+            }
+            div.sticky {
+                position: -webkit-sticky;
+                position: sticky;
+                top:0;
+                padding: 5px;
+                
+                /* border: 2px solid #ffffff; */
+            }
+            .dropbtn {
+                display: inline-block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            .dropdown {
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position:absolute;
+                /* position:fixed; */
+                top:60px;
+                right:40px;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                /* padding: 12px 16px; */
+            }
+            .dropdown-content a {
+                /* color: black; */
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            
+            p.main { text-align:justify;}
+            hr { color:rgb(178, 221, 223)}
+            a:link    { color:rgb(0, 0, 255); text-decoration: none;}  /*未访问*/
+            a:visited { color:yellow;}          /*已访问*/
+            a:hover   { color:rgb(255, 0, 0); text-decoration: underline;}  /*鼠标移动到上方*/
+            a:active  { color:blue;}            /*鼠标点击时*/
+            .center { text-align: center;}
+            .skyblue { color: skyblue;}
+            .aqua { color: aqua;}
+            /* li { display: inline;} */
+        </style>
+    </head>
+
+    <header>  <!-- 页眉 -->
+        <!-- <p class = "skyblue">页眉</p> -->
+        <!-- <h1>一级标题</h1> -->
+        <h1 style="margin-left: 0; font-variant:small-caps; text-decoration: overline; letter-spacing: 2px; font-family:Georgia, 'Times New Roman', Times, serif;"> 
+            Happy ApriL Fool'S DaY
+        </h1>
+        <!-- <h1 style="margin-left: 0; font-variant:small-caps; text-decoration: overline; letter-spacing: 2px; font-family:Georgia, 'Times New Roman', Times, serif;"> 
+            Happy Tomb-sweePing Day
+        </h1> -->
+    </header>
+    
+    <body>
+        
+        <div id="container" style="width: 100%;">
+            <div id="header" class="sticky" style="height: 100%; width: 100%; opacity:0.4; background-color:rgb(255, 255, 255);">
+                <ul style="text-align: end;">
+                    <li style="display: inline;"><a href="xx" target="_blank">首页&nbsp;&nbsp;</a></li>
+                    
+                    <li style="display: inline;" class="dropdown">
+                        <a href="xx" target="_blank" class="dropbtn">技能树&nbsp;&nbsp;</a>
+                        <div class="dropdown-content">
+                            <a href="xx" target="_blank" class="dropbtn">算法</a>
+                            <a href="xx" target="_blank" class="dropbtn">WEB</a>
+                            <a href="xx" target="_blank" class="dropbtn">Linux</a>
+
+                        </div>
+                        
+                    </li>
+                    
+                    <li style="display: inline;"><a href="xx" target="_blank">留言板&nbsp;&nbsp;</a></li>
+
+                    <li style="display: inline;"><a href="xx" target="_blank">转盘&nbsp;&nbsp;</a></li>
+
+                    <li style="display: inline;"><a href="xx" target="_blank">登录/注册&nbsp;&nbsp;</a></li>
+                    
+                </ul>
+            </div>
+        
+            <div id="background_" style="width: 200px; height: 360px; float: left; background-color: rgb(222, 242, 255); text-align: center;">
+                <!-- <img src="https://pic.imgdb.cn/item/65e016f99f345e8d034d83a3.jpg"  alt="M" width="200" height="400"> -->
+                <img src="https://pic.imgdb.cn/item/65e019eb9f345e8d03540049.jpg" alt="M" width="200" height="360">
+            </div>
+
+            <div id="content" style="width: 400px; height: 360px; float: left;">
+                <p class="main">中间内容</p>
+                <hr>
+                
+            </div>
+
+            <div id="righterea" style="width: 200px; height: 360px; float: right; background-color: rgb(255, 255, 255);" >
+                公告栏<br><br>
+                <br>(clock)<br>hanging <br>
+                <!-- <b>菜单</b></br> -->
+                <ul style="list-style-type: none; margin: 0; padding: 0;">
+                    <!-- <li>首页</li>
+                    <li>转盘</li>
+                    <li>技能树</li> -->
+                    <!-- <img src="https://pic.imgdb.cn/item/65def71e9f345e8d03f761e1.jpg"  alt="M" width="200" height="200"> -->
+        
+                </ul>
+            </div>
+
+            <div id="footer" style="width: 100%; height: 20px; background-color: cornflowerblue; clear: both; text-align: center;">
+                <small>版权 &copy; W</small>
+            </div>
+        </div>
+        <h2> Title h2 </h2>
+        <p>
+            <hr>    <!-- 水平线 -->
+            
+            
+        </p>
+        
+        
+        <img src="https://pic.imgdb.cn/item/65def71e9f345e8d03f761e1.jpg"  alt="M" width="200" height="200">
+    </body>
+</html>
